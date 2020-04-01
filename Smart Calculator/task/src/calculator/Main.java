@@ -8,36 +8,17 @@ import java.util.Stack;
 public class Main {
 
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-//        Scanner scanner = new Scanner("-2 + 4 - 5 + 6");
-        // put your code here
-        while (scanner.hasNextLine()) {
-            String input = scanner.nextLine();
-            switch (input) {
-                case "/exit":
-                    System.out.println("Bye!");
-                    return;
-                case "/help":
-                    System.out.println("The program calculates the sum of numbers");
-                    break;
-                case "":
-                    continue;
-                default:
-                    if (input.contains("/")) {
-                        System.out.println("Unknown command");
-                        continue;
-                    }
-            }
-            String clear = clearOther(input);
-            if (clear == null) {
+        final Scanner scanner = new Scanner(System.in);
+        while (true) {
+            InputLine input = new InputLine(scanner.nextLine());
+
+            if (input.isCommand()) {
+                Command command = new Command(input);
+                command.action();
+            } else if (input.isExpression()) {
+
+            } else if (!input.isEmpty()) {
                 System.out.println("Invalid expression");
-            } else {
-                List<String> stringList = createPostfixNotation(clear);
-                if (stringList == null) {
-                    System.out.println("Invalid expression");
-                } else {
-                    System.out.println(readPostfixNotation(stringList));
-                }
             }
         }
     }
