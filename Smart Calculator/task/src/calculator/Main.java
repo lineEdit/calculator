@@ -14,6 +14,9 @@ public class Main {
                 System.out.println("Bye!");
                 break;
             }
+            if (string.contains("/help")) {
+                System.out.println("The program calculates the sum of numbers");
+            }
             if (string.isEmpty()) {
                 continue;
             }
@@ -22,14 +25,11 @@ public class Main {
             for (int i = 0; i < stringSplit.length; ++i) {
                 ints[i] = Integer.parseInt(stringSplit[i]);
             }
-            switch (ints.length) {
-                case 1:
-                    System.out.println(ints[0]);
-                    break;
-                case 2:
-                    System.out.println(ints[0] + ints[1]);
-                    break;
+            int sum = 0;
+            for (int item : ints) {
+                sum += item;
             }
+            System.out.println(sum);
         }
     }
 }
