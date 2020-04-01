@@ -13,26 +13,32 @@ public class Main {
         // put your code here
         while (scanner.hasNextLine()) {
             String input = scanner.nextLine();
-            if (input.contains("/exit")) {
-                System.out.println("Bye!");
-                break;
+            switch (input) {
+                case "/exit":
+                    System.out.println("Bye!");
+                    return;
+                case "/help":
+                    System.out.println("The program calculates the sum of numbers");
+                    break;
+                case "":
+                    continue;
+                default:
+                    if (input.contains("/")) {
+                        System.out.println("Unknown command");
+                        continue;
+                    }
             }
-            if (input.contains("/help")) {
-                System.out.println("The program calculates the sum of numbers");
+            String clear = clearOther(input);
+            if (clear == null) {
+                System.out.println("Invalid expression");
+            } else {
+                List<String> stringList = createPostfixNotation(clear);
+                if (stringList == null) {
+                    System.out.println("Invalid expression");
+                } else {
+                    System.out.println(readPostfixNotation(stringList));
+                }
             }
-            if (input.isEmpty()) {
-                continue;
-            }
-
-            System.out.println(
-                    readPostfixNotation(
-                        createPostfixNotation(
-                                clearOther(input)
-                        )
-                    )
-            );
-
-
         }
     }
 
@@ -46,6 +52,19 @@ public class Main {
         }
         out = out.replaceAll("\\+", " + ");
         out = out.replaceAll("-", " - ").trim();
+
+//Testing invalid expression
+        for (String item : out.split("\\s+")) {
+            if (item.matches("[a-z]+")) {
+                return null;
+            }
+        }
+//Testing invalid expression
+        int digits = out.split("\\W+").length;
+        int symbolMath = out.split("\\d+").length;
+        if (digits < symbolMath){
+            return null;
+        }
         return out;
     }
 
@@ -65,10 +84,19 @@ public class Main {
         if (stack.size() > 0 ) {
             out.add(stack.pop());
         }
+
+//Testing invalid expression
+        if (!(out.contains("+") || out.contains("-"))) {
+            return null;
+        }
+
         return out;
     }
 
     static int readPostfixNotation(List<String> list) {
+        if (list == null) {
+            return 0;
+        }
         Stack<Integer> stack = new Stack<>();
         for (String item : list) {
             if (item.matches("\\d+")) {
