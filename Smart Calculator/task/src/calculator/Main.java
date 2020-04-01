@@ -1,5 +1,6 @@
 package calculator;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -20,16 +21,28 @@ public class Main {
             if (string.isEmpty()) {
                 continue;
             }
+            List<Integer> integerList = new ArrayList<>();
+            List<String> stringList = new ArrayList<>();
             String[] stringSplit = string.split("\\s+");
-            int[] ints = new int[stringSplit.length];
-            for (int i = 0; i < stringSplit.length; ++i) {
-                ints[i] = Integer.parseInt(stringSplit[i]);
+            for (String item : stringSplit) {
+                try {
+                    integerList.add(Integer.parseInt(item));
+                } catch (Exception e) {
+                    while (item.contains("--")) {
+                        item = item.replaceAll("--" , "+");
+                    }
+                    while (item.contains("++")) {
+                        item = item.replaceAll("\\+\\+" , "+");
+                    }
+                    stringList.add(item);
+                }
             }
-            int sum = 0;
-            for (int item : ints) {
-                sum += item;
+            System.out.println(stringList);
+            System.out.println(integerList);
+            Integer sum = 0;
+            for (Integer integer : integerList) {
+                sum += integer
             }
-            System.out.println(sum);
         }
     }
 }
