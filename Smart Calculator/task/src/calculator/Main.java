@@ -8,8 +8,8 @@ import java.util.Stack;
 public class Main {
 
     public static void main(String[] args) {
-//        Scanner scanner = new Scanner(System.in);
-        Scanner scanner = new Scanner("-2 + 4 - 5 + 6");
+        Scanner scanner = new Scanner(System.in);
+//        Scanner scanner = new Scanner("-2 + 4 - 5 + 6");
         // put your code here
         while (scanner.hasNextLine()) {
             String input = scanner.nextLine();
@@ -62,30 +62,33 @@ public class Main {
                 stack.push(item);
             }
         }
+        if (stack.size() > 0 ) {
+            out.add(stack.pop());
+        }
         return out;
     }
 
     static int readPostfixNotation(List<String> list) {
         Stack<Integer> stack = new Stack<>();
         for (String item : list) {
-            try {
+            if (item.matches("\\d+")) {
                 stack.push(Integer.parseInt(item));
-            } catch (Exception e) {
+            } else {
                 int pop = 0;
-                switch (item) {
-                    case "+":
-                        while (stack.size() > 0) {
-                            pop += stack.pop();
-                        }
-                        stack.push(pop);
-                        break;
-                    case "-":
-                        while (stack.size() > 0) {
-                            pop -= stack.pop();
-                        }
-                        stack.push(pop);
-                        break;
+                if (stack.size() > 0) {
+                    switch (item) {
+                        case "+":
+                            pop = stack.pop();
+                            break;
+                        case "-":
+                            pop = -stack.pop();
+                            break;
+                    }
                 }
+                while (stack.size() > 0) {
+                    pop += stack.pop();
+                }
+                stack.push(pop);
             }
         }
         return stack.pop();
