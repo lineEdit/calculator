@@ -7,6 +7,10 @@ public class InputLine {
         this.content = content.trim().toLowerCase();
     }
 
+    public boolean isAssignment() {
+        return content.matches("[a-zA-Z]+\\s*=\\s*[a-zA-Z]*\\D*\\d*");
+    }
+
     public boolean isCommand() {
         return content.matches("/[a-z]+");
     }
