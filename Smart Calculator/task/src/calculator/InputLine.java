@@ -16,7 +16,7 @@ public class InputLine {
     }
 
     public boolean isExpression() {
-        return content.matches("[-+]?\\d+(\\s[-+]\\s[-+]?\\d+)*");
+        return content.matches("[-+]?\\w+(\\s*[-+]?\\s*[-+]?\\w+)*");
     }
 
     public boolean isEmpty() {

@@ -6,9 +6,11 @@ import java.util.Stack;
 
 public class Expression {
     private String[] expression;
+    Assignment assignment;
 
-    public Expression(InputLine input) {
+    public Expression(InputLine input, Assignment assignment) {
         expression = input.getContent().split("\\s+");
+        this.assignment = assignment;
     }
 
     public int calc() {
@@ -29,18 +31,6 @@ public class Expression {
         out = out.replaceAll("\\+", " + ");
         out = out.replaceAll("-", " - ").trim();
 
-//Testing invalid expression
-        for (String item : out.split("\\s+")) {
-            if (item.matches("[a-z]+")) {
-                return null;
-            }
-        }
-//Testing invalid expression
-        int digits = out.split("\\W+").length;
-        int symbolMath = out.split("\\d+").length;
-        if (digits < symbolMath){
-            return null;
-        }
         return out;
     }
 
@@ -59,11 +49,6 @@ public class Expression {
         }
         if (stack.size() > 0 ) {
             out.add(stack.pop());
-        }
-
-//Testing invalid expression
-        if (!(out.contains("+") || out.contains("-"))) {
-            return null;
         }
 
         return out;

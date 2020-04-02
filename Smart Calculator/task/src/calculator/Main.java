@@ -1,22 +1,25 @@
 package calculator;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
-import java.util.Stack;
+import java.util.*;
 
 public class Main {
 
     public static void main(String[] args) {
         final Scanner scanner = new Scanner(System.in);
+        Assignment assignment = new Assignment();
+
         while (true) {
             InputLine input = new InputLine(scanner.nextLine());
-
             if (input.isCommand()) {
                 Command command = new Command(input);
                 command.action();
             } else if (input.isAssignment()) {
                 System.out.println("isAssignment");
+                assignment.put(input);
+                System.out.println(assignment.getMap());
+            } else if (input.isExpression()) {
+                Expression expression = new Expression(input, assignment);
+                System.out.println(expression.calc());
             } else if (!input.isEmpty()) {
                 System.out.println("Invalid expression");
             }
