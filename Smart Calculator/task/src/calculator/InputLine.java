@@ -4,7 +4,7 @@ public class InputLine {
     private String content;
 
     public InputLine(String content) {
-        this.content = content.trim().toLowerCase();
+        this.content = content.trim();
     }
 
     public boolean isAssignment() {

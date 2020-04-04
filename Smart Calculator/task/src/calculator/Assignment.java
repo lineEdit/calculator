@@ -11,7 +11,7 @@ public class Assignment {
     }
 
     public Integer getValue(String key){
-        return map.get(key);
+        return map.getOrDefault(key, null);
     }
 
     public Map<String, Integer> getMap() {

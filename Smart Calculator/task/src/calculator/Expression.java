@@ -15,19 +15,25 @@ public class Expression {
         this.postfix = new ArrayList<>();
     }
 
-    public int calc() {
+    public void calc() {
         if (expression.length == 1) {
             if (expression[0].matches("[a-zA-Z]+")) {
-                return assignment.getValue(expression[0]);
+                Integer integer = assignment.getValue(expression[0]);
+                if (integer == null) {
+                    System.out.println("Unknown variable");
+                } else {
+                    System.out.println(integer);
+                }
+            } else {
+                System.out.println(Integer.parseInt(expression[0]));
             }
-            return Integer.parseInt(expression[0]);
+        } else {
+            setValuesToTeplaceVariables();
+
+            createPostfixNotation();
+
+            System.out.println(calcPostfixNotation());
         }
-
-        setValuesToTeplaceVariables();
-
-        createPostfixNotation();
-
-        return calcPostfixNotation();
     }
 
     private void setValuesToTeplaceVariables() {
