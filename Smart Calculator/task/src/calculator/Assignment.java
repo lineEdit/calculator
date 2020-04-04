@@ -10,6 +10,10 @@ public class Assignment {
         map = new HashMap<>();
     }
 
+    public Integer getValue(String key){
+        return map.get(key);
+    }
+
     public Map<String, Integer> getMap() {
         return map;
     }

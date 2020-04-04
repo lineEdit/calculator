@@ -6,80 +6,80 @@ import java.util.Stack;
 
 public class Expression {
     private String[] expression;
+    private List<String> postfix;
     Assignment assignment;
 
     public Expression(InputLine input, Assignment assignment) {
         expression = input.getContent().split("\\s+");
         this.assignment = assignment;
+        this.postfix = new ArrayList<>();
     }
 
     public int calc() {
         if (expression.length == 1) {
             return Integer.parseInt(expression[0]);
         }
-        return 0;
+
+        setValuesToTeplaceVariables();
+
+        createPostfixNotation();
+
+        return calcPostfixNotation();
     }
 
-    String clearOther(String string) {
-        String out = string;
-        while (out.contains("--")) {
-            out = out.replaceAll("--" , "+");
+    private void setValuesToTeplaceVariables() {
+        for(int i = 0; i < expression.length; ++i) {
+            if (expression[i].matches("[a-zA-Z]")) {
+                for (String key : assignment.getMap().keySet()) {
+                    if (expression[i].compareToIgnoreCase(key) == 0) {
+                        expression[i] = assignment.getValue(key).toString();
+                        break;
+                    }
+                }
+            }
         }
-        while (out.contains("++")) {
-            out = out.replaceAll("\\+\\+" , "+");
-        }
-        out = out.replaceAll("\\+", " + ");
-        out = out.replaceAll("-", " - ").trim();
-
-        return out;
     }
 
-    List<String> createPostfixNotation(String string) {
+    private void createPostfixNotation() {
         Stack<String> stack = new Stack<>();
-        List<String> out = new ArrayList<>();
-        for (String item : string.split("\\s+")) {
+        for (String item : expression) {
             if (item.matches("\\d+")) {
-                out.add(item);
+                postfix.add(item);
             } else {
                 if (stack.size() > 0) {
-                    out.add(stack.pop());
+                    postfix.add(stack.pop());
                 }
                 stack.push(item);
             }
         }
         if (stack.size() > 0 ) {
-            out.add(stack.pop());
+            postfix.add(stack.pop());
         }
-
-        return out;
     }
 
-    int readPostfixNotation(List<String> list) {
-        if (list == null) {
-            return 0;
-        }
-        Stack<Integer> stack = new Stack<>();
-        for (String item : list) {
+    private int calcPostfixNotation() {
+        Stack<Integer> integerStack = new Stack<>();
+        for (String item : postfix) {
             if (item.matches("\\d+")) {
-                stack.push(Integer.parseInt(item));
+                integerStack.push(Integer.parseInt(item));
             } else {
                 int pop = 0;
-                if (stack.size() > 0) {
+                if (integerStack.size() > 0) {
                     switch (item) {
                         case "+":
-                            pop = stack.pop();
+                            pop = integerStack.pop();
                             break;
                         case "-":
-                            pop = -stack.pop();
+                            pop = -integerStack.pop();
                             break;
                     }
                 }
-                while (stack.size() > 0) {
-                    pop += stack.pop();
+                while (integerStack.size() > 0) {
+                    pop += integerStack.pop();
                 }
-                stack.push(pop);
+                integerStack.push(pop);
             }
         }
-        return stack.pop();
+        return integerStack.pop();
     }
 }
