@@ -17,6 +17,9 @@ public class Expression {
 
     public int calc() {
         if (expression.length == 1) {
+            if (expression[0].matches("[a-zA-Z]")) {
+                return assignment.getValue(expression[0]);
+            }
             return Integer.parseInt(expression[0]);
         }
 
