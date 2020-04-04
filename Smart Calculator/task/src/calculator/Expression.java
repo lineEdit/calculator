@@ -17,7 +17,7 @@ public class Expression {
 
     public int calc() {
         if (expression.length == 1) {
-            if (expression[0].matches("[a-zA-Z]")) {
+            if (expression[0].matches("[a-zA-Z]+")) {
                 return assignment.getValue(expression[0]);
             }
             return Integer.parseInt(expression[0]);
@@ -32,7 +32,7 @@ public class Expression {
 
     private void setValuesToTeplaceVariables() {
         for(int i = 0; i < expression.length; ++i) {
-            if (expression[i].matches("[a-zA-Z]")) {
+            if (expression[i].matches("[a-zA-Z]+")) {
                 for (String key : assignment.getMap().keySet()) {
                     if (expression[i].compareToIgnoreCase(key) == 0) {
                         expression[i] = assignment.getValue(key).toString();
