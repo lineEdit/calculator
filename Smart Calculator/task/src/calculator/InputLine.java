@@ -7,8 +7,25 @@ public class InputLine {
         this.content = content.trim();
     }
 
+    public boolean isInvalidAssignment() {
+        int count = 0;
+        for (char item : content.toCharArray()) {
+            if (item == '=') {
+                ++count;
+            }
+            if (count > 1) {
+                return true;
+            }
+        }
+        return content.matches("^\\s*[a-zA-Z]+\\d+\\s*=\\s*[a-zA-Z]+\\d+\\s*");
+    }
+
+    public boolean isInvalidIdentifier() {
+        return content.matches("\\s*[a-zA-Z]+\\d+\\s*");
+    }
+
     public boolean isAssignment() {
-        return content.matches("[a-zA-Z]+\\s*=\\s*[a-zA-Z]*\\D*\\d*");
+        return content.matches("\\s*[a-zA-Z]+\\s*=\\s*[a-zA-Z]*\\D*\\d*");
     }
 
     public boolean isCommand() {

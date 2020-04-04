@@ -12,12 +12,16 @@ public class Main {
             InputLine input = new InputLine(scanner.nextLine());
             if (input.isCommand()) {
                 Command command = new Command(input);
-//                Analysis Warning else
+//                Analysis Warning
                 if (input.toString().compareToIgnoreCase("/exit") == 0) {
                     break;
                 }
-//                Analysis Warning else
+//                Analysis Warning
                 command.action();
+            } else if (input.isInvalidIdentifier()) {
+                System.out.println("Invalid identifier");
+            } else if (input.isInvalidAssignment()) {
+                System.out.println("Invalid assignment");
             } else if (input.isAssignment()) {
                 assignment.put(input);
             } else if (input.isExpression()) {
