@@ -78,13 +78,15 @@ public class Expression {
                 if (stack.size() > 0) {
                     if ((item.contains("*") && (stack.peek().contains("-") || stack.peek().contains("+")))) {
                         stack.push(item);
-                    }
-                    if (stack.peek() == null) throw new AssertionError();
-                    if ((item.contains("+") || item.contains("-")) && stack.peek().contains("*")) {
-                        while (stack.size() > 0) {
-                            postfix.add(stack.pop());
-                        }
+                    } else if (item.contains("+") || item.contains("-")) {
+//                        while (stack.size() > 0) {
+//                            postfix.add(stack.getLast());
+//                        }
+//                        stack.push(item);
+                        postfix.add(stack.pop());
                         stack.push(item);
+                    } else {
+                        postfix.add(item);
                     }
                 } else {
                     stack.push(item);
@@ -103,26 +105,39 @@ public class Expression {
                 integerStack.push(Integer.parseInt(item));
             } else {
                 int pop = 0;
-                if (integerStack.size() > 0) {
+                if (integerStack.size() >= 2) {
                     switch (item) {
                         case "+":
-                            pop = integerStack.pop();
+                            pop = integerStack.pop() + integerStack.pop();
                             break;
                         case "-":
-                            pop = -integerStack.pop();
-                            break;
-                    }
-                }
-                while (integerStack.size() > 0) {
-                    switch (item) {
-                        case "+":
-                            pop += integerStack.pop();
+                            pop = -integerStack.pop() + integerStack.pop();
                             break;
                         case "*":
-                            pop *= integerStack.pop();
+                            pop = integerStack.pop() * integerStack.pop();
                             break;
                     }
                 }
+//                if (integerStack.size() > 0) {
+//                    switch (item) {
+//                        case "+":
+//                            pop += integerStack.pop();
+//                            break;
+//                        case "*":
+//                            pop *= integerStack.pop();
+//                            break;
+//                    }
+//                }
+//                while (integerStack.size() > 0) {
+//                    switch (item) {
+//                        case "+":
+//                            pop += integerStack.pop();
+//                            break;
+//                        case "*":
+//                            pop *= integerStack.pop();
+//                            break;
+//                    }
+//                }
                 integerStack.push(pop);
             }
         }
