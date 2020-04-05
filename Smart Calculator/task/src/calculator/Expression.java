@@ -17,10 +17,11 @@ public class Expression {
 
     public void calc() {
         if (expression.length == 1) {
-            if (expression[0].matches("[a-zA-Z]+")) {
+            if (expression[0].matches("\\s*[a-zA-Z]+")) {
                 Integer integer = assignment.getValue(expression[0]);
                 if (integer == null) {
-                    System.out.println("Unknown variable");
+//                    Use print, otherwise the test fails
+                    System.out.print("Unknown variable\n");
                 } else {
                     System.out.println(integer);
                 }

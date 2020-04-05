@@ -1,7 +1,12 @@
 package calculator;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class InputLine {
     private String content;
+    private Pattern pattern;
+    private Matcher matcher;
 
     public InputLine(String content) {
         this.content = content.trim();
@@ -17,23 +22,33 @@ public class InputLine {
                 return true;
             }
         }
-        return content.matches("^\\s*[a-zA-Z]+\\d+\\s*=\\s*[a-zA-Z]+\\d+\\s*");
+        pattern = Pattern.compile("=\\s*([a-zA-Z]+\\d+)+\\s*");
+        matcher = pattern.matcher(content);
+        return matcher.find();
     }
 
     public boolean isInvalidIdentifier() {
-        return content.matches("\\s*[a-zA-Z]+\\d+\\s*");
+        pattern = Pattern.compile("\\s*[a-zA-Z]+\\d+\\s*=");
+        matcher = pattern.matcher(content);
+        return matcher.find();
     }
 
     public boolean isAssignment() {
-        return content.matches("\\s*[a-zA-Z]+\\s*=\\s*[a-zA-Z]*\\D*\\d*");
+        pattern = Pattern.compile("\\s*[a-zA-Z]+\\s*=\\s*[a-zA-Z]*\\D*\\d*");
+        matcher = pattern.matcher(content);
+        return matcher.find();
     }
 
     public boolean isCommand() {
-        return content.matches("/[a-z]+");
+        pattern = Pattern.compile("/[a-z]+");
+        matcher = pattern.matcher(content);
+        return matcher.find();
     }
 
     public boolean isExpression() {
-        return content.matches("[-+]?\\w+(\\s*[-+]?\\s*[-+]?\\w+)*");
+        pattern = Pattern.compile("[-+]?\\w+(\\s*[-+]?\\s*[-+]?\\w+)*");
+        matcher = pattern.matcher(content);
+        return matcher.find();
     }
 
     public boolean isEmpty() {
