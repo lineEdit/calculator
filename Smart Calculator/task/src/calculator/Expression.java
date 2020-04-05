@@ -1,8 +1,6 @@
 package calculator;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Stack;
+import java.util.*;
 
 public class Expression {
     private String[] expression;
@@ -51,15 +49,46 @@ public class Expression {
     }
 
     private void createPostfixNotation() {
-        Stack<String> stack = new Stack<>();
+        Deque<String> stack = new ArrayDeque<>();
         for (String item : expression) {
             if (item.matches("\\d+")) {
                 postfix.add(item);
-            } else {
-                if (stack.size() > 0) {
-                    postfix.add(stack.pop());
-                }
+            }
+            if (item.contains("(")) {
                 stack.push(item);
+            }
+            if (item.contains(")")) {
+                if (stack.size() == 0) {
+                    System.out.println("Invalid expression");
+                    return;
+                }
+                while (stack.size() > 0) {
+                    String itemStack = stack.pop();
+                    if (itemStack.contains("(")) {
+                        stack.remove();
+                        break;
+                    } else {
+                        postfix.add(itemStack);
+                    }
+                }
+            }
+            if (item.contains("-")
+                    || item.contains("+")
+                    || item.contains("*")) {
+                if (stack.size() > 0) {
+                    if ((item.contains("*") && (stack.peek().contains("-") || stack.peek().contains("+")))) {
+                        stack.push(item);
+                    }
+                    if (stack.peek() == null) throw new AssertionError();
+                    if ((item.contains("+") || item.contains("-")) && stack.peek().contains("*")) {
+                        while (stack.size() > 0) {
+                            postfix.add(stack.pop());
+                        }
+                        stack.push(item);
+                    }
+                } else {
+                    stack.push(item);
+                }
             }
         }
         if (stack.size() > 0 ) {
@@ -68,7 +97,7 @@ public class Expression {
     }
 
     private int calcPostfixNotation() {
-        Stack<Integer> integerStack = new Stack<>();
+        Deque<Integer> integerStack = new ArrayDeque<>();
         for (String item : postfix) {
             if (item.matches("\\d+")) {
                 integerStack.push(Integer.parseInt(item));
@@ -85,7 +114,14 @@ public class Expression {
                     }
                 }
                 while (integerStack.size() > 0) {
-                    pop += integerStack.pop();
+                    switch (item) {
+                        case "+":
+                            pop += integerStack.pop();
+                            break;
+                        case "*":
+                            pop *= integerStack.pop();
+                            break;
+                    }
                 }
                 integerStack.push(pop);
             }

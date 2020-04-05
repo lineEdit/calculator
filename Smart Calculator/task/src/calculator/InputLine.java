@@ -9,6 +9,14 @@ public class InputLine {
     private Matcher matcher;
 
     public InputLine(String content) {
+        while (content.contains("--")) {
+            content = content.replaceAll("--" , "+");
+        }
+        while (content.contains("++")) {
+            content = content.replaceAll("\\+\\+" , "+");
+        }
+        content = content.replaceAll("\\+", " + ");
+        content = content.replaceAll("-", " - ");
         this.content = content.trim();
     }
 
@@ -46,7 +54,8 @@ public class InputLine {
     }
 
     public boolean isExpression() {
-        pattern = Pattern.compile("[-+]?\\w+(\\s*[-+]?\\s*[-+]?\\w+)*");
+        pattern = Pattern.compile("[-+]?\\(?(\\w+\\s*[-+]*[*]?)+\\)?");
+//        pattern = Pattern.compile("[-+]?\\w+(\\s*[-+]?\\s*[-+]?\\w+)*");
         matcher = pattern.matcher(content);
         return matcher.find();
     }
