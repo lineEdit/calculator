@@ -5,8 +5,8 @@ import java.util.*;
 public class Main {
 
     public static void main(String[] args) {
-//        final Scanner scanner = new Scanner("1 +++ 2 * 3 -- 4");
-        final Scanner scanner = new Scanner(System.in);
+        final Scanner scanner = new Scanner("(4 + 2) * 3\n/exit");
+//        final Scanner scanner = new Scanner(System.in);
         Assignment assignment = new Assignment();
 
         while (true) {

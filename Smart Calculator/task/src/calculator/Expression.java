@@ -51,9 +51,7 @@ public class Expression {
     private void createPostfixNotation() {
         Deque<String> stack = new ArrayDeque<>();
         for (String item : expression) {
-            if (item.matches("\\d+")) {
-                postfix.add(item);
-            } else if (item.contains("(")) {
+            if (item.contains("(")) {
                 stack.push(item);
             } else if (item.contains(")")) {
                 boolean flagNotExist = true;
@@ -69,18 +67,39 @@ public class Expression {
                     System.out.println("Invalid expression");
                     return;
                 }
-            } else if (
-                    (item.contains("+")
+            } else if (item.matches("\\d+")) {
+                    postfix.add(item);
+            } else if (item.contains("+")
+                    || item.contains("-")
+                    || item.contains("*")
+                    || item.contains("/")) {
+                if (stack.size() > 0
+                        && (item.contains("+")
                             || item.contains("-")
                             || stack.peek().contains("+")
                             || stack.peek().contains("-")
-                    ) && (stack.peek().contains("*")
-                            || stack.peek().contains("/")
-                    )
-            ) {
-                postfix.add(stack.pop());
-                stack.push(item);
+                        ) && (stack.peek().contains("*")
+                                || stack.peek().contains("/")
+                        )
+                ) {
+                    postfix.add(stack.pop());
+                    stack.push(item);
+                } else {
+                    stack.push(item);
+                }
             }
+//            } else if (
+//                    (item.contains("+")
+//                            || item.contains("-")
+//                            || stack.peek().contains("+")
+//                            || stack.peek().contains("-")
+//                    ) && (stack.peek().contains("*")
+//                            || stack.peek().contains("/")
+//                    )
+//            ) {
+//                postfix.add(stack.pop());
+//                stack.push(item);
+//            }
 
         }
         while (stack.size() > 0 ) {
