@@ -53,43 +53,37 @@ public class Expression {
         for (String item : expression) {
             if (item.matches("\\d+")) {
                 postfix.add(item);
-            }
-            if (item.contains("(")) {
+            } else if (item.contains("(")) {
                 stack.push(item);
-            }
-            if (item.contains(")")) {
-                if (stack.size() == 0) {
+            } else if (item.contains(")")) {
+                boolean flagNotExist = true;
+                while (stack.size() > 0) {
+                    String value = stack.pop();
+                    if (value.contains("(")) {
+                        flagNotExist = false;
+                        break;
+                    }
+                    postfix.add(value);
+                }
+                if (flagNotExist) {
                     System.out.println("Invalid expression");
                     return;
                 }
-                while (stack.size() > 0) {
-                    String itemStack = stack.pop();
-                    if (itemStack.contains("(")) {
-                        stack.remove();
-                        break;
-                    } else {
-                        postfix.add(itemStack);
-                    }
-                }
+            } else if (
+                    (item.contains("+")
+                            || item.contains("-")
+                            || stack.peek().contains("+")
+                            || stack.peek().contains("-")
+                    ) && (stack.peek().contains("*")
+                            || stack.peek().contains("/")
+                    )
+            ) {
+                postfix.add(stack.pop());
+                stack.push(item);
             }
-            if (item.contains("-")
-                    || item.contains("+")
-                    || item.contains("*")) {
-                if (stack.size() > 0) {
-                    if ((item.contains("*") && (stack.peek().contains("-") || stack.peek().contains("+")))) {
-                        stack.push(item);
-                    } else if (item.contains("+") || item.contains("-")) {
-                        while (stack.size() > 0) {
-                            postfix.add(stack.pop());
-                        }
-                        stack.push(item);
-                    }
-                } else {
-                    stack.push(item);
-                }
-            }
+
         }
-        if (stack.size() > 0 ) {
+        while (stack.size() > 0 ) {
             postfix.add(stack.pop());
         }
     }
