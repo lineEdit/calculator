@@ -1,5 +1,6 @@
 package calculator;
 
+import java.math.BigInteger;
 import java.util.*;
 
 public class Expression {
@@ -16,7 +17,7 @@ public class Expression {
     public void calc() {
         if (expression.length == 1) {
             if (expression[0].matches("\\s*[a-zA-Z]+")) {
-                Integer integer = assignment.getValue(expression[0]);
+                BigInteger integer = assignment.getValue(expression[0]);
                 if (integer == null) {
 //                    Use print, otherwise the test fails
                     System.out.print("Unknown variable\n");
@@ -24,7 +25,7 @@ public class Expression {
                     System.out.println(integer);
                 }
             } else {
-                System.out.println(Integer.parseInt(expression[0]));
+                System.out.println(new BigInteger(expression[0]));
             }
         } else {
             setValuesToTeplaceVariables();
@@ -121,28 +122,28 @@ public class Expression {
         }
     }
 
-    private int calcPostfixNotation() {
-        Deque<Integer> integerStack = new ArrayDeque<>();
+    private BigInteger calcPostfixNotation() {
+        Deque<BigInteger> integerStack = new ArrayDeque<>();
         for (String item : postfix) {
             if (item.matches("\\d+")) {
-                integerStack.push(Integer.parseInt(item));
+                integerStack.push(new BigInteger(item));
             } else {
-                int pop = 0;
+                BigInteger pop = BigInteger.ZERO;
                 if (integerStack.size() >= 2) {
                     switch (item) {
                         case "+":
-                            pop = integerStack.pop() + integerStack.pop();
+                            pop = integerStack.pop().add(integerStack.pop());
                             break;
                         case "-":
-                            pop = -integerStack.pop() + integerStack.pop();
+                            pop = integerStack.pop().negate().add(integerStack.pop());
                             break;
                         case "*":
-                            pop = integerStack.pop() * integerStack.pop();
+                            pop = integerStack.pop().multiply(integerStack.pop());
                             break;
                         case "/":
-                            int left = integerStack.pop();
-                            int right = integerStack.pop();
-                            pop = right / left;
+                            BigInteger left = integerStack.pop();
+                            BigInteger right = integerStack.pop();
+                            pop = right.divide(left);
                             break;
                     }
                 }

@@ -1,28 +1,29 @@
 package calculator;
 
+import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.Map;
 
 public class Assignment {
-    Map<String, Integer> map;
+    Map<String, BigInteger> map;
 
     public Assignment() {
         map = new HashMap<>();
     }
 
-    public Integer getValue(String key){
+    public BigInteger getValue(String key){
         return map.getOrDefault(key, null);
     }
 
-    public Map<String, Integer> getMap() {
+    public Map<String, BigInteger> getMap() {
         return map;
     }
 
-    public void setMap(Map<String, Integer> map) {
+    public void setMap(Map<String, BigInteger> map) {
         this.map = map;
     }
 
-    public void put(String key, Integer value) {
+    public void put(String key, BigInteger value) {
         if (map.containsKey(key)) {
             map.replace(key, value);
         } else {
@@ -35,7 +36,7 @@ public class Assignment {
         if (map.containsKey(value)) {
             put(key, map.get(value));
         } else {
-            map.put(key, Integer.parseInt(value));
+            map.put(key, new BigInteger(value));
         }
     }
 
