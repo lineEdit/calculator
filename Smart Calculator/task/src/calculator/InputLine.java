@@ -17,6 +17,11 @@ public class InputLine {
         }
         content = content.replaceAll("\\+", " + ");
         content = content.replaceAll("-", " - ");
+        content = content.replaceAll("\\(", " ( ");
+        content = content.replaceAll("\\)", " ) ");
+        content = content.replaceAll("\\*", " * ");
+//        content = content.replaceAll("/", " / ");
+        content = content.replaceAll("\\s{2}", " ");
         this.content = content.trim();
     }
 
