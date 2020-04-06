@@ -79,14 +79,10 @@ public class Expression {
                     if ((item.contains("*") && (stack.peek().contains("-") || stack.peek().contains("+")))) {
                         stack.push(item);
                     } else if (item.contains("+") || item.contains("-")) {
-//                        while (stack.size() > 0) {
-//                            postfix.add(stack.getLast());
-//                        }
-//                        stack.push(item);
-                        postfix.add(stack.pop());
+                        while (stack.size() > 0) {
+                            postfix.add(stack.pop());
+                        }
                         stack.push(item);
-                    } else {
-                        postfix.add(item);
                     }
                 } else {
                     stack.push(item);
